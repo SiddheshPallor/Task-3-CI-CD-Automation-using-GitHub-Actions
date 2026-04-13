@@ -6,7 +6,7 @@ resource "aws_instance" "web" {
 	ami = "ami-0f5ee92e2d63afc18"
 	instance_type = "t3.micro"
 	key_name      = "siddhesh-key"
-	vpc_security_group_ids = [aws_security_group.web_sg1.id]
+	
 
 user_data = <<-EOF
 #!/bin/bash
@@ -23,6 +23,25 @@ EOF
 	
 	Name = "Docker-Server"
 }	 
+}
+
+
+# ew ec2 server 
+
+resource "aws_instance" "web2" {
+	ami = "ami-0f5ee92e2d63afc18"
+	instance_type = "t3.micro"
+
+	subnet_id = data.aws_subnet.subnet.id
+	
+	iam_instance_profile = aws_iam_instance_profile.profile.name
+
+	key_name = "siddhesh-key"
+
+	tags = {
+	Name = "Second-Server"
+}
+
 }
 
 resource "aws_security_group" "web_sg1" {
@@ -50,3 +69,54 @@ resource "aws_security_group" "web_sg1" {
 }
 
 }
+
+
+#Fetch VPC usig tag
+
+data "aws_vpc" "vpc" {
+	filter {
+	name = "tag:Name"
+	values = ["portfolio-vpc"]
+}
+}
+
+#Fetch Subnet  usig tag
+
+data "aws_subnet" "subnet" {
+	filter {
+	name = "tag:Name"
+	values = ["portfolio-subnet"]
+}
+}
+
+
+
+
+resource "aws_iam_role" "ec2_role" {
+	name = "ec2-s3-role"
+	
+	assume_role_policy = jsonencode({
+		Version = "2012-10-17"
+		Statement = [{
+		Effect = "Allow"
+		Principal = {
+			Service = "ec2.amazonaws.com"
+		}
+		Action = "sts:AssumeRole"
+		}]
+	})
+}
+
+
+resource "aws_iam_role_policy_attachment" "s3_access" {
+	role 	= aws_iam_role.ec2_role.name
+	policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+resource "aws_iam_instance_profile" "profile" {
+  name = "ec2-profile"
+  role = aws_iam_role.ec2_role.name
+}
+
+
+
