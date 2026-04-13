@@ -1,60 +1,69 @@
-:root {
-  --bg: linear-gradient(120deg, #4facfe, #00f2fe);
-  --card: #fff;
-  --accent: #0b69ff;
-  --muted: #7a7a7a;
-  font-family: 'Inter', sans-serif;
-}
-
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
-  margin: 0;
-  background: var(--bg);
-  color: #111;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  scroll-behavior: smooth;
 }
 
 /* Navbar */
 .nav {
   display: flex;
   justify-content: space-between;
-  padding: 1rem 2rem;
-  background: rgba(255,255,255,0.1);
+  padding: 1.5rem 2rem;
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(10px);
 }
 
 .nav a {
   color: white;
   margin-left: 1rem;
   text-decoration: none;
+  transition: 0.3s;
+}
+
+.nav a:hover {
+  color: #ffd369;
 }
 
 /* Hero */
 .hero {
   text-align: center;
-  color: white;
-  padding: 5rem 1rem;
+  padding: 6rem 1rem;
 }
 
 .hero h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
 }
 
 .btn {
   display: inline-block;
   margin-top: 1rem;
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 1.5rem;
   background: white;
-  color: var(--accent);
-  border-radius: 20px;
-  text-decoration: none;
-  font-weight: bold;
+  color: #333;
+  border-radius: 25px;
+  transition: 0.3s;
 }
 
-/* About */
-.about {
+.btn:hover {
+  transform: scale(1.1);
+  background: #ffd369;
+}
+
+/* Glass effect */
+.glass {
+  margin: 2rem;
   padding: 2rem;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 15px;
   text-align: center;
 }
 
@@ -62,20 +71,47 @@ body {
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-  gap: 1rem;
+  gap: 1.5rem;
   padding: 2rem;
 }
 
 .card {
-  background: var(--card);
-  padding: 1.2rem;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  transition: 0.4s;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.05);
+  background: rgba(255,255,255,0.2);
 }
 
 /* Footer */
 footer {
   text-align: center;
   padding: 1rem;
-  color: var(--muted);
+}
+
+/* Animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s forwards;
+}
+
+.delay {
+  animation-delay: 0.5s;
+}
+
+.delay2 {
+  animation-delay: 1s;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
